@@ -15,13 +15,19 @@ const express = require("express");
 // console.log(path.join(__dirname, "../public"));
 
 const app = express(); // express function does not take in any argument
+
+// Define paths for Express config
 const publicDirectoryPath = path.join(__dirname, "../public");
+
+// By default, Express will search for "views" folder for rendering. We can change this but we need to let Express know where to look
+const viewsPath = path.join(__dirname, "../templates");
+// We then use app.set() to tell Express to use this path
+app.set("views", viewsPath);
 
 // use hbs package to serve our dynamic views
 // .set() allows you to set a value for a given express setting and there are a few
 // 1. Key 2. Setting name 3. Value we want to set
 app.set("view engine", "hbs");
-// app.set('views', path.join(__dirname, '../views'))
 
 // .use() to serve up directory(for static views)
 app.use(express.static(path.join(publicDirectoryPath)));
