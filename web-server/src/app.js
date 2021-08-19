@@ -2,6 +2,8 @@
 const path = require("path");
 // Express is a function
 const express = require("express");
+// For partials
+const hbs = require("hbs");
 
 // To serve index.html file, it needs to be an absolute path from the root of your machine, it can't be a relative path
 // use console.log(__dirname) & console.log(__filename) to see the difference
@@ -20,13 +22,20 @@ const app = express(); // express function does not take in any argument
 const publicDirectoryPath = path.join(__dirname, "../public");
 
 // By default, Express will search for "views" folder for rendering. We can change this but we need to let Express know where to look
-const viewsPath = path.join(__dirname, "../templates");
+const viewsPath = path.join(__dirname, "../templates/views");
 // We then use app.set() to tell Express to use this path
 app.set("views", viewsPath);
 
+// hbs setup for partials
+const partialsPath = path.join(__dirname, "../templates/partials");
+// Instead of app.set() we use hbs to handle path for partials
+hbs.registerPartials(partialsPath);
+
 // use hbs package to serve our dynamic views
 // .set() allows you to set a value for a given express setting and there are a few
-// 1. Key 2. Setting name 3. Value we want to set
+// 1. Key
+// 2. Setting name
+// 3. Value we want to set
 app.set("view engine", "hbs");
 
 // .use() to serve up directory(for static views)
@@ -38,9 +47,9 @@ app.use(express.static(path.join(publicDirectoryPath)));
 // response (res) contains a bunch of methods allowing us to customize what we're going to send back to the requester
 
 // send() can send regular text, HTML or JSON format
-// JSON format
-// Express will automatically stringify the JSON for us
-// Accepts in Array and Object format
+// JSON format:
+// - Express will automatically stringify the JSON for us
+// - Accepts in Array and Object format
 
 app.get("", (req, res) => {
   // render allows us to render one of our views
@@ -49,19 +58,22 @@ app.get("", (req, res) => {
   // First argument is the name to render, second argument is an object that contains all of the values you want that view to be able to access
   res.render("index", {
     title: "Weather",
-    name: "Mead",
+    name: "Haz",
   });
 });
 
 app.get("/about", (req, res) => {
   res.render("about", {
     title: "About",
+    name: "Haz",
   });
 });
 
 app.get("/help", (req, res) => {
   res.render("help", {
     title: "Help",
+    name: "Haz",
+    helpText: "This is some helpful text",
   });
 });
 
